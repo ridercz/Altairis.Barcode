@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Text.RegularExpressions;
 
@@ -13,11 +11,11 @@ namespace Altairis.Barcode {
             return true;
         }
 
-        public override System.Drawing.Size TotalSize {
+        public override Size TotalSize {
             get {
                 // Get number of modules
-                int charLength = 8 + 2 * this.WideMultiplier;   // length of single char
-                int totalLength =
+                var charLength = 8 + 2 * this.WideMultiplier;   // length of single char
+                var totalLength =
                     4 + 2 * this.WideMultiplier                 // start seq
                     + charLength * this.Content.Length          // content
                     + 3 + 2 * this.WideMultiplier;                  // stop seq
@@ -39,9 +37,9 @@ namespace Altairis.Barcode {
             this.AppendElement(true, false); this.AppendElement(false, false);  // N
 
             // Write text
-            for (int i = 0; i < this.Content.Length; i++) {
-                byte codeChar = this.CODE_TABLE[int.Parse(this.Content.Substring(i, 1))];
-                for (int exp = 4; exp >= 0; exp--) {
+            for (var i = 0; i < this.Content.Length; i++) {
+                var codeChar = this.CODE_TABLE[int.Parse(this.Content.Substring(i, 1))];
+                for (var exp = 4; exp >= 0; exp--) {
                     this.AppendElement(true, (codeChar & (int)Math.Pow(2, exp)) != 0);
                     this.AppendElement(false, false);
                 }

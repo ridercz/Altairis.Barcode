@@ -9,14 +9,14 @@ namespace Altairis.Barcode {
         private static readonly bool[] START_STOP_BARS = { true, false, true };
         private static readonly bool[] SEPARATOR_BARS = { false, true, false, true, false };
 
-        private List<bool> bars = new List<bool>();
+        private readonly List<bool> bars = new List<bool>();
 
-        public override void DrawTo(System.Drawing.Graphics g, System.Drawing.Point position) {
+        public override void DrawTo(Graphics g, Point position) {
             this.PopulateBars();
             this.DrawFixedWidthBars(this.bars.ToArray(), g, position);
         }
 
-        public override System.Drawing.Size TotalSize {
+        public override Size TotalSize {
             get {
                 if (this.Orientation == BarcodeOrientation.Horizontal) {
                     return new Size(this.ModuleSize.Width * this.NumberOfBars, this.ModuleSize.Height);
@@ -31,29 +31,25 @@ namespace Altairis.Barcode {
 
         protected abstract int NumberOfBars { get; }
 
-        protected void AppendStartStop() {
-            this.bars.AddRange(START_STOP_BARS);
-        }
+        protected void AppendStartStop() => this.bars.AddRange(START_STOP_BARS);
 
-        protected void AppendSeparator() {
-            this.bars.AddRange(SEPARATOR_BARS);
-        }
+        protected void AppendSeparator() => this.bars.AddRange(SEPARATOR_BARS);
 
         protected void AppendDigit(byte digit) {
-            for (int i = 0; i < 7; i++) {
+            for (var i = 0; i < 7; i++) {
                 this.bars.Add((digit & (byte)Math.Pow(2, 6 - i)) > 0);
             }
 
         }
 
         protected static byte ComputeCheckDigit(string s) {
-            if (s == null) throw new ArgumentNullException("s");
-            if (string.IsNullOrEmpty(s)) throw new ArgumentException("Value cannot be null or empty string.", "s");
+            if (s == null) throw new ArgumentNullException(nameof(s));
+            if (string.IsNullOrEmpty(s)) throw new ArgumentException("Value cannot be null or empty string.", nameof(s));
             if (!Regex.IsMatch(s, "^[0-9]{12}$") && !Regex.IsMatch(s, "^[0-9]{7}$")) throw new FormatException("Invalid EAN format -- must be 7 or 12 decimal digits.");
 
-            int sum = 0;
-            for (int i = s.Length - 1; i >= 0; i -= 2) sum += Convert.ToByte(s.Substring(i, 1)) * 3;
-            for (int i = s.Length - 2; i >= 0; i -= 2) sum += Convert.ToByte(s.Substring(i, 1));
+            var sum = 0;
+            for (var i = s.Length - 1; i >= 0; i -= 2) sum += Convert.ToByte(s.Substring(i, 1)) * 3;
+            for (var i = s.Length - 2; i >= 0; i -= 2) sum += Convert.ToByte(s.Substring(i, 1));
 
             return (byte)((10 - (sum % 10)) % 10);
         }

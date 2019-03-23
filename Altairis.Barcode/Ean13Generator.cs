@@ -13,31 +13,29 @@ namespace Altairis.Barcode {
         }
 
         public static bool ValidateCheckDigit(string s) {
-            if (s == null) throw new ArgumentNullException("s");
-            if (!System.Text.RegularExpressions.Regex.IsMatch(s, "^[0-9]{13}$")) throw new FormatException("Invalid EAN format -- must be exactly 13 decimal digits.");
+            if (s == null) throw new ArgumentNullException(nameof(s));
+            if (!Regex.IsMatch(s, "^[0-9]{13}$")) throw new FormatException("Invalid EAN format -- must be exactly 13 decimal digits.");
 
-            byte checkDigit = ComputeCheckDigit(s.Substring(0, 12));
+            var checkDigit = ComputeCheckDigit(s.Substring(0, 12));
             return checkDigit == Convert.ToByte(s.Substring(12, 1));
         }
 
-        protected override int NumberOfBars {
-            get { return 95; }
-        }
+        protected override int NumberOfBars => 95;
 
         protected override void PopulateBars() {
             // Create bar array
-            string s = this.Content;
+            var s = this.Content;
             if (s.Length == 12) s += Convert.ToString(ComputeCheckDigit(s)); // Add checksum
 
             // Lead-in
             this.AppendStartStop();
 
             // Get code map for first six numbers
-            byte codeMap = CODE_MAPS[Convert.ToByte(s.Substring(0, 1))];
+            var codeMap = CODE_MAPS[Convert.ToByte(s.Substring(0, 1))];
 
             // First six numbers
-            for (int i = 1; i <= 6; i++) {
-                int codeTableIndex = Math.Sign(codeMap & (byte)Math.Pow(2, 6 - i));
+            for (var i = 1; i <= 6; i++) {
+                var codeTableIndex = Math.Sign(codeMap & (byte)Math.Pow(2, 6 - i));
                 this.AppendDigit(CODE_TABLES[Convert.ToByte(s.Substring(i, 1)), codeTableIndex]);
             }
 
@@ -45,7 +43,7 @@ namespace Altairis.Barcode {
             this.AppendSeparator();
 
             // Last six numbers
-            for (int i = 7; i <= 12; i++) this.AppendDigit(CODE_TABLES[Convert.ToByte(s.Substring(i, 1)), 2]);
+            for (var i = 7; i <= 12; i++) this.AppendDigit(CODE_TABLES[Convert.ToByte(s.Substring(i, 1)), 2]);
 
             // Lead-out
             this.AppendStartStop();

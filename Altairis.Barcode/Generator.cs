@@ -8,38 +8,22 @@ namespace Altairis.Barcode {
     public abstract class Generator {
 
         private string content;
-        private Size moduleSize;
-        private Color barColor = Color.Black;
-        private Color spaceColor = Color.White;
-        private BarcodeOrientation orientation = BarcodeOrientation.Horizontal;
 
-        public BarcodeOrientation Orientation {
-            get { return orientation; }
-            set { orientation = value; }
-        }
+        public BarcodeOrientation Orientation { get; set; } = BarcodeOrientation.Horizontal;
 
-        public Color SpaceColor {
-            get { return spaceColor; }
-            set { spaceColor = value; }
-        }
+        public Color SpaceColor { get; set; } = Color.White;
 
-        public Color BarColor {
-            get { return barColor; }
-            set { barColor = value; }
-        }
+        public Color BarColor { get; set; } = Color.Black;
 
         public string Content {
-            get { return content; }
+            get => this.content;
             set {
-                if (!ValidateContent(value)) throw new FormatException();
-                content = value;
+                if (!this.ValidateContent(value)) throw new FormatException();
+                this.content = value;
             }
         }
 
-        public Size ModuleSize {
-            get { return moduleSize; }
-            set { moduleSize = value; }
-        }
+        public Size ModuleSize { get; set; }
 
         public abstract Size TotalSize { get; }
 
@@ -47,13 +31,9 @@ namespace Altairis.Barcode {
 
         public abstract void DrawTo(Graphics g, Point position);
 
-        public void DrawTo(Graphics g, int x, int y) {
-            this.DrawTo(g, new Point(x, y));
-        }
+        public void DrawTo(Graphics g, int x, int y) => this.DrawTo(g, new Point(x, y));
 
-        public void DrawTo(Graphics g) {
-            this.DrawTo(g, new Point(0, 0));
-        }
+        public void DrawTo(Graphics g) => this.DrawTo(g, new Point(0, 0));
 
         protected internal Size ModuleSizeOriented {
             get {
@@ -67,11 +47,11 @@ namespace Altairis.Barcode {
         }
 
         protected internal void DrawFixedWidthBars(bool[] bars, Graphics g, Point position) {
-            System.Collections.Generic.List<Rectangle> blacks = new System.Collections.Generic.List<Rectangle>();
-            System.Collections.Generic.List<Rectangle> whites = new System.Collections.Generic.List<Rectangle>();
+            var blacks = new System.Collections.Generic.List<Rectangle>();
+            var whites = new System.Collections.Generic.List<Rectangle>();
 
-            for (int i = 0; i < bars.Length; i++) {
-                Rectangle r = new Rectangle(position, this.ModuleSizeOriented);
+            for (var i = 0; i < bars.Length; i++) {
+                var r = new Rectangle(position, this.ModuleSizeOriented);
                 if (this.Orientation == BarcodeOrientation.Horizontal) {
                     position.Offset(this.ModuleSizeOriented.Width, 0);
                 }
