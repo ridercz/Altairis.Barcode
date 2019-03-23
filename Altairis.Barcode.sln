@@ -1,7 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altairis.Barcode", "Altairis.Barcode\Altairis.Barcode.csproj", "{F5109868-D1C7-48C7-BDE0-E0F985C6AA1F}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.489
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altairis.Barcode", "Altairis.Barcode\Altairis.Barcode.csproj", "{12D4E1AF-BCFF-4465-81CD-BB9B607B220D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,12 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F5109868-D1C7-48C7-BDE0-E0F985C6AA1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5109868-D1C7-48C7-BDE0-E0F985C6AA1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5109868-D1C7-48C7-BDE0-E0F985C6AA1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5109868-D1C7-48C7-BDE0-E0F985C6AA1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12D4E1AF-BCFF-4465-81CD-BB9B607B220D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12D4E1AF-BCFF-4465-81CD-BB9B607B220D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12D4E1AF-BCFF-4465-81CD-BB9B607B220D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12D4E1AF-BCFF-4465-81CD-BB9B607B220D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E0DE18A-106B-4640-9187-7EC99A09C187}
 	EndGlobalSection
 EndGlobal
