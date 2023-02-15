@@ -13,12 +13,11 @@ namespace Altairis.Barcode {
 
         public static bool ValidateCheckDigit(string s) {
             if (s == null) throw new ArgumentNullException(nameof(s));
-            if (!Regex.IsMatch(s, "^[0-9]{8}$")) throw new FormatException("Invalid EAN format -- must be exactly 8 decimal digits.");
+            if (!Regex.IsMatch(s, "^[0-9]{8}$")) throw new FormatException("Invalid EAN format - must be exactly 8 decimal digits.");
 
             var checkDigit = ComputeCheckDigit(s.Substring(0, 7));
 
             if (checkDigit != Convert.ToByte(s.Substring(7, 1))) throw new Exception(string.Format("Check digit is {0}, should be {1}.", s.Substring(7, 1), checkDigit));
-
             return checkDigit == Convert.ToByte(s.Substring(7, 1));
         }
 

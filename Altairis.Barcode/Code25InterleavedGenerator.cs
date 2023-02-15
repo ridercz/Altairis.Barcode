@@ -15,12 +15,7 @@ namespace Altairis.Barcode {
             get => base.Content;
             set {
                 // Append leading 0 to odd-length codes
-                if (value.Length % 2 == 1) {
-                    base.Content = "0" + value;
-                }
-                else {
-                    base.Content = value;
-                }
+                base.Content = value.Length % 2 == 1 ? "0" + value : value;
             }
         }
 
@@ -34,12 +29,9 @@ namespace Altairis.Barcode {
                     + 2 + this.WideMultiplier;                  // stop seq
 
                 // Get real size
-                if (this.Orientation == BarcodeOrientation.Horizontal) {
-                    return new Size(this.ModuleSize.Width * totalLength, this.ModuleSize.Height);
-                }
-                else {
-                    return new Size(this.ModuleSize.Height, this.ModuleSize.Width * totalLength);
-                }
+                return this.Orientation == BarcodeOrientation.Horizontal
+                    ? new Size(this.ModuleSize.Width * totalLength, this.ModuleSize.Height)
+                    : new Size(this.ModuleSize.Height, this.ModuleSize.Width * totalLength);
             }
         }
 

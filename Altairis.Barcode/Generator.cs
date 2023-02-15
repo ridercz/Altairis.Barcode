@@ -39,8 +39,7 @@ namespace Altairis.Barcode {
             get {
                 if (this.Orientation == BarcodeOrientation.Horizontal) {
                     return this.ModuleSize;
-                }
-                else {
+                } else {
                     return new Size(this.ModuleSize.Height, this.ModuleSize.Width);
                 }
             }
@@ -54,8 +53,7 @@ namespace Altairis.Barcode {
                 var r = new Rectangle(position, this.ModuleSizeOriented);
                 if (this.Orientation == BarcodeOrientation.Horizontal) {
                     position.Offset(this.ModuleSizeOriented.Width, 0);
-                }
-                else {
+                } else {
                     position.Offset(0, this.ModuleSizeOriented.Height);
                 }
                 if (bars[i]) blacks.Add(r); else whites.Add(r);

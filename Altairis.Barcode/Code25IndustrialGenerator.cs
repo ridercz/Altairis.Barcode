@@ -18,15 +18,12 @@ namespace Altairis.Barcode {
                 var totalLength =
                     4 + 2 * this.WideMultiplier                 // start seq
                     + charLength * this.Content.Length          // content
-                    + 3 + 2 * this.WideMultiplier;                  // stop seq
+                    + 3 + 2 * this.WideMultiplier;              // stop seq
 
                 // Get real size
-                if (this.Orientation == BarcodeOrientation.Horizontal) {
-                    return new Size(this.ModuleSize.Width * totalLength, this.ModuleSize.Height);
-                }
-                else {
-                    return new Size(this.ModuleSize.Height, this.ModuleSize.Width * totalLength);
-                }
+                return this.Orientation == BarcodeOrientation.Horizontal
+                    ? new Size(this.ModuleSize.Width * totalLength, this.ModuleSize.Height)
+                    : new Size(this.ModuleSize.Height, this.ModuleSize.Width * totalLength);
             }
         }
 

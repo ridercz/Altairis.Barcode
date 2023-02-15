@@ -20,8 +20,7 @@ namespace Altairis.Barcode {
         protected void AppendElement(bool isBar, bool isWide) {
             if (isWide) {
                 for (var i = 0; i < this.wideMultiplier; i++) this.bars.Add(isBar);
-            }
-            else {
+            } else {
                 this.bars.Add(isBar);
             }
         }

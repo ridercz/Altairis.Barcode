@@ -14,7 +14,7 @@ namespace Altairis.Barcode {
 
         public static bool ValidateCheckDigit(string s) {
             if (s == null) throw new ArgumentNullException(nameof(s));
-            if (!Regex.IsMatch(s, "^[0-9]{13}$")) throw new FormatException("Invalid EAN format -- must be exactly 13 decimal digits.");
+            if (!Regex.IsMatch(s, "^[0-9]{13}$")) throw new FormatException("Invalid EAN format - must be exactly 13 decimal digits.");
 
             var checkDigit = ComputeCheckDigit(s.Substring(0, 12));
             return checkDigit == Convert.ToByte(s.Substring(12, 1));
