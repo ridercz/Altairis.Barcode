@@ -4,38 +4,34 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 
 namespace Altairis.Barcode {
-    public abstract class EanGenerator : Generator {
+    public abstract class EanGenerator : BarcodeGenerator {
         protected static readonly byte[,] CODE_TABLES = {
             { 0x0D, 0x27, 0x72 },
             { 0x19, 0x33, 0x66 },
-            { 0x13, 0x1B, 0x6C }, 
-            { 0x3D, 0x21, 0x42 }, 
-            { 0x23, 0x1D, 0x5C }, 
-            { 0x31, 0x39, 0x4E }, 
-            { 0x2F, 0x05, 0x50 }, 
-            { 0x3B, 0x11, 0x44 }, 
-            { 0x37, 0x09, 0x48 }, 
-            { 0x0B, 0x17, 0x74 } 
+            { 0x13, 0x1B, 0x6C },
+            { 0x3D, 0x21, 0x42 },
+            { 0x23, 0x1D, 0x5C },
+            { 0x31, 0x39, 0x4E },
+            { 0x2F, 0x05, 0x50 },
+            { 0x3B, 0x11, 0x44 },
+            { 0x37, 0x09, 0x48 },
+            { 0x0B, 0x17, 0x74 }
         };
         private static readonly bool[] START_STOP_BARS = { true, false, true };
         private static readonly bool[] SEPARATOR_BARS = { false, true, false, true, false };
 
         private readonly List<bool> bars = new List<bool>();
 
+        protected EanGenerator(string content) : base(content) { }
+
         public override void DrawTo(Graphics g, Point position) {
             this.PopulateBars();
             this.DrawFixedWidthBars(this.bars.ToArray(), g, position);
         }
 
-        public override Size TotalSize {
-            get {
-                if (this.Orientation == BarcodeOrientation.Horizontal) {
-                    return new Size(this.ModuleSize.Width * this.NumberOfBars, this.ModuleSize.Height);
-                } else {
-                    return new Size(this.ModuleSize.Height, this.ModuleSize.Width * this.NumberOfBars);
-                }
-            }
-        }
+        public override Size TotalSize => this.Orientation == BarcodeOrientation.Horizontal
+            ? new Size(this.ModuleSize.Width * this.NumberOfBars, this.ModuleSize.Height)
+            : new Size(this.ModuleSize.Height, this.ModuleSize.Width * this.NumberOfBars);
 
         protected abstract void PopulateBars();
 

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace Altairis.Barcode {
-    public abstract class Code39Generator : Generator {
+    public abstract class Code39Generator : BarcodeGenerator {
         private readonly Dictionary<char, int> codeTable = new Dictionary<char, int> {
             ['0'] = 0x0a6d,
             ['1'] = 0x0d2b,
@@ -51,17 +52,17 @@ namespace Altairis.Barcode {
             ['*'] = 0x096d,
         };
 
-        protected abstract string EncodedContent { get; }
+        protected Code39Generator(string content)
+            : base(content) { }
 
-        public override Size TotalSize =>
-            this.Orientation == BarcodeOrientation.Horizontal
-                ? new Size(this.ModuleSize.Width * (13 * this.EncodedContent.Length), this.ModuleSize.Height)
-                : new Size(this.ModuleSize.Height, this.ModuleSize.Width * (13 * this.EncodedContent.Length));
+        public override Size TotalSize => this.Orientation == BarcodeOrientation.Horizontal
+            ? new Size(this.ModuleSize.Width * (13 * this.content.Length), this.ModuleSize.Height)
+            : new Size(this.ModuleSize.Height, this.ModuleSize.Width * (13 * this.content.Length));
 
         public override void DrawTo(Graphics g, Point position) {
             // Populate bars
             var bars = new List<bool>();
-            foreach (var c in this.EncodedContent) {
+            foreach (var c in this.content) {
                 var code = this.codeTable[c];
                 for (var exp = 11; exp >= 0; exp--) {
                     bars.Add((code & (int)Math.Pow(2, exp)) != 0);

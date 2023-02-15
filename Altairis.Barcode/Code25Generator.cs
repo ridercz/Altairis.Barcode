@@ -1,13 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace Altairis.Barcode {
-    public abstract class Code25Generator : Generator {
+    public abstract class Code25Generator : BarcodeGenerator {
         protected readonly byte[] CODE_TABLE = { 0x06, 0x11, 0x09, 0x18, 0x05, 0x14, 0x0c, 0x03, 0x12, 0x0a };
 
         private readonly List<bool> bars = new List<bool>();
         private int wideMultiplier = 3;
+
+        protected Code25Generator(string content) : base(content) {
+            if (!Regex.IsMatch(content, "^[0-9]{1,}$")) throw new ArgumentException("Content can contain only decimal numbers.", nameof(content));
+        }
 
         public int WideMultiplier {
             get => this.wideMultiplier;

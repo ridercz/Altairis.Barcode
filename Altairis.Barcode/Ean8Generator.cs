@@ -3,12 +3,17 @@ using System.Text.RegularExpressions;
 
 namespace Altairis.Barcode {
     public class Ean8Generator : EanGenerator {
-
-        public override bool ValidateContent(string s) {
-            if (string.IsNullOrEmpty(s)) return false;              // null or empty string
-            if (!Regex.IsMatch(s, "^[0-9]{7,8}$")) return false;    // must be 7 or 8 numbers
-            if (s.Length == 7) return true;                         // no checksum, all numbers
-            return ValidateCheckDigit(s);                           // check checksum
+        public Ean8Generator(string content) : base(content) {
+            if (!Regex.IsMatch(content, "^[0-9]{7,8}$")) {
+                // Invalid characters
+                throw new ArgumentException("Content must be 7 or 8 decimal numbers.", nameof(content));
+            } else if (this.content.Length == 7) {
+                // 7 digits - add checksum
+                this.content += Convert.ToString(ComputeCheckDigit(this.content));
+            } else if (!ValidateCheckDigit(content)) {
+                // 8 digits - validate checksum
+                throw new ArgumentException("Content contains invalid check digit.", nameof(content));
+            }
         }
 
         public static bool ValidateCheckDigit(string s) {
@@ -24,21 +29,17 @@ namespace Altairis.Barcode {
         protected override int NumberOfBars => 67;
 
         protected override void PopulateBars() {
-            // Create bar array
-            var s = this.Content;
-            if (s.Length == 7) s += Convert.ToString(ComputeCheckDigit(s)); // Add checksum
-
             // Lead-in
             this.AppendStartStop();
 
             // First four numbers
-            for (var i = 0; i < 4; i++) this.AppendDigit(CODE_TABLES[Convert.ToByte(s.Substring(i, 1)), 0]);
+            for (var i = 0; i < 4; i++) this.AppendDigit(CODE_TABLES[Convert.ToByte(this.content.Substring(i, 1)), 0]);
 
             // Separator
             this.AppendSeparator();
 
             // Last three numbers + checksum
-            for (var i = 4; i < 8; i++) this.AppendDigit(CODE_TABLES[Convert.ToByte(s.Substring(i, 1)), 2]);
+            for (var i = 4; i < 8; i++) this.AppendDigit(CODE_TABLES[Convert.ToByte(this.content.Substring(i, 1)), 2]);
 
             // Lead-out
             this.AppendStartStop();
